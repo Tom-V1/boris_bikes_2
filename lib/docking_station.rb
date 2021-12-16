@@ -9,22 +9,23 @@ class DockingStation
   def initialize(capacity=DEFAULT_CAPACITY)
     @capacity = capacity
     @bikes = []
-    @broken =[]
+    # @broken =[]
   end
 
+  # Need to remove bike that is rleased
   def release_bike
-    fail "No bikes available" if empty?
-    @bikes.pop
+    fail "No bikes available" if empty? || @bikes.all? { |bike| bike.broken? }
+    i = @bikes.index { |bike| !bike.broken? }
+    @bikes.delete_at(i)
+
+
+
+
   end
 
   def dock(bike)
     fail "No space in station" if full?
-    if bike.broken? == true
-      @broken << bike
-      @capacity -= 1
-    else
-      @bikes << bike
-    end
+    @bikes << bike
   end
 
   private
